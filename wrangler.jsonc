@@ -1,7 +1,7 @@
 {
   "name": "camellia-portal",
   "main": "./worker.js",
-  "compatibility_date": "2026-08-27",
+  "compatibility_date": "2026-08-26",
 
   "assets": {
     "directory": "./",
