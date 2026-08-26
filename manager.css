@@ -1,0 +1,1099 @@
+/* =========================================
+   Camellia Portal 管理画面
+   manager.css
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        sans-serif;
+
+    background: #f5f7f6;
+    color: #333;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================
+   ヘッダー
+========================================= */
+
+.manager-header {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e6e3;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+
+.manager-header-inner {
+    width: min(1200px, calc(100% - 32px));
+
+    min-height: 72px;
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.manager-brand {
+    font-size: 21px;
+    font-weight: 800;
+
+    color: #247447;
+}
+
+
+.manager-subtitle {
+    margin-top: 1px;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+.view-portal-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 44px;
+
+    padding: 9px 16px;
+
+    border-radius: 10px;
+
+    background: #f0f4f1;
+    color: #247447;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+.view-portal-button:hover {
+    background: #e5ece7;
+}
+
+
+/* =========================================
+   メイン
+========================================= */
+
+.manager-main {
+    width: min(1200px, calc(100% - 32px));
+
+    margin: 0 auto;
+
+    padding: 30px 0 60px;
+}
+
+
+.manager-section {
+    margin-bottom: 28px;
+
+    padding: 24px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e9e6;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+
+.section-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 22px;
+}
+
+
+.section-heading h1,
+.section-heading h2 {
+    margin: 0;
+
+    color: #222;
+
+    line-height: 1.4;
+}
+
+
+.section-heading h1 {
+    font-size: 23px;
+}
+
+
+.section-heading h2 {
+    font-size: 21px;
+}
+
+
+.section-heading p {
+    margin: 6px 0 0;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+/* =========================================
+   ボタン共通
+========================================= */
+
+.primary-button,
+.secondary-button,
+.delete-button {
+    min-height: 46px;
+
+    padding: 10px 18px;
+
+    border-radius: 11px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    border: 1px solid transparent;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.15s ease,
+        background 0.15s ease;
+}
+
+
+.primary-button {
+    background: #247447;
+    color: #ffffff;
+}
+
+
+.primary-button:hover {
+    opacity: 0.9;
+}
+
+
+.secondary-button {
+    background: #ffffff;
+    color: #555;
+
+    border-color: #d8ddd9;
+}
+
+
+.secondary-button:hover {
+    background: #f6f7f6;
+}
+
+
+.delete-button {
+    background: #c62828;
+    color: #ffffff;
+}
+
+
+.delete-button:hover {
+    opacity: 0.9;
+}
+
+
+.primary-button:active,
+.secondary-button:active,
+.delete-button:active {
+    transform: scale(0.98);
+}
+
+
+/* =========================================
+   催事一覧
+========================================= */
+
+.event-list {
+    display: grid;
+
+    gap: 14px;
+}
+
+
+.event-manager-card {
+    display: grid;
+
+    grid-template-columns: minmax(0, 1fr) auto;
+
+    gap: 18px;
+
+    padding: 18px;
+
+    border: 1px solid #e4e8e5;
+
+    border-radius: 15px;
+
+    background: #ffffff;
+}
+
+
+.event-manager-main {
+    min-width: 0;
+}
+
+
+.event-manager-title {
+    margin: 0;
+
+    color: #222;
+
+    font-size: 18px;
+    font-weight: 800;
+
+    word-break: break-word;
+}
+
+
+.event-manager-date {
+    margin-top: 5px;
+
+    color: #247447;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+.event-manager-time {
+    margin-top: 2px;
+
+    color: #666;
+
+    font-size: 14px;
+}
+
+
+.event-manager-description {
+    margin-top: 8px;
+
+    color: #777;
+
+    font-size: 14px;
+
+    white-space: pre-wrap;
+}
+
+
+.event-manager-image {
+    width: 110px;
+    height: 80px;
+
+    margin-top: 12px;
+
+    border-radius: 10px;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+.event-manager-actions {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 7px;
+
+    flex-wrap: wrap;
+}
+
+
+.action-button {
+    min-height: 42px;
+
+    padding: 8px 12px;
+
+    border-radius: 9px;
+
+    border: 1px solid #d9dedb;
+
+    background: #ffffff;
+
+    color: #444;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+}
+
+
+.action-button:hover {
+    background: #f4f6f5;
+}
+
+
+.action-button.delete {
+    color: #c62828;
+
+    border-color: #efcaca;
+}
+
+
+.empty-event-list {
+    padding: 35px 20px;
+
+    border: 2px dashed #dfe4e1;
+
+    border-radius: 14px;
+
+    color: #777;
+
+    text-align: center;
+}
+
+
+/* =========================================
+   フォーム
+========================================= */
+
+.form-section {
+    scroll-margin-top: 95px;
+}
+
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #333;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+.form-group input[type="text"],
+.form-group input[type="url"],
+.form-group input[type="date"],
+.form-group input[type="time"],
+.form-group textarea {
+    display: block;
+
+    width: 100%;
+
+    min-height: 48px;
+
+    padding: 11px 13px;
+
+    border: 1px solid #cfd6d1;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #222;
+
+    font-family: inherit;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+
+.form-group textarea {
+    min-height: 130px;
+
+    resize: vertical;
+}
+
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #247447;
+
+    box-shadow:
+        0 0 0 3px rgba(36, 116, 71, 0.12);
+}
+
+
+.form-group input[type="file"] {
+    display: block;
+
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px dashed #cfd6d1;
+
+    border-radius: 10px;
+
+    background: #fafbfa;
+
+    font-size: 14px;
+}
+
+
+.form-row {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.4fr)
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+    gap: 15px;
+}
+
+
+.field-help {
+    margin: 6px 0 0;
+
+    color: #888;
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   画像プレビュー
+========================================= */
+
+.image-preview {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 180px;
+
+    margin-top: 12px;
+
+    padding: 12px;
+
+    border: 1px dashed #d5dbd7;
+
+    border-radius: 12px;
+
+    background: #fafbfa;
+
+    color: #999;
+
+    text-align: center;
+
+    overflow: hidden;
+}
+
+
+.image-preview img {
+    display: block;
+
+    width: 100%;
+    max-height: 350px;
+
+    object-fit: contain;
+
+    border-radius: 8px;
+}
+
+
+/* =========================================
+   フォームボタン
+========================================= */
+
+.form-actions {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding-top: 10px;
+}
+
+
+.save-button {
+    min-width: 150px;
+}
+
+
+/* =========================================
+   モーダル
+========================================= */
+
+.modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 3000;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.5);
+}
+
+
+.modal.show {
+    display: flex;
+}
+
+
+.modal-content {
+    width: min(480px, 100%);
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+
+.modal-content h2 {
+    margin: 0;
+
+    font-size: 20px;
+}
+
+
+.modal-content p {
+    margin: 12px 0 0;
+
+    color: #666;
+
+    font-size: 14px;
+}
+
+
+.modal-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 22px;
+}
+
+
+/* =========================================
+   メッセージ
+========================================= */
+
+.manager-message {
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 20px;
+
+    z-index: 4000;
+
+    width: min(520px, calc(100% - 30px));
+
+    padding: 13px 16px;
+
+    border-radius: 12px;
+
+    background: #247447;
+    color: #ffffff;
+
+    text-align: center;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.18);
+
+    transform: translate(-50%, 120px);
+
+    opacity: 0;
+
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+
+    pointer-events: none;
+}
+
+
+.manager-message.show {
+    transform: translate(-50%, 0);
+
+    opacity: 1;
+}
+
+
+/* =========================================
+   iPad / タブレット
+========================================= */
+
+@media (min-width: 601px) and (max-width: 900px) {
+
+    .manager-main {
+        width: min(100% - 30px, 760px);
+
+        padding-top: 24px;
+    }
+
+
+    .manager-section {
+        padding: 21px;
+    }
+
+
+    .event-manager-card {
+        grid-template-columns: 1fr;
+    }
+
+
+    .event-manager-actions {
+        justify-content: flex-start;
+    }
+
+}
+
+
+/* =========================================
+   スマホ
+========================================= */
+
+@media (max-width: 600px) {
+
+    .manager-header-inner {
+        width: calc(100% - 20px);
+
+        min-height: 64px;
+
+        gap: 10px;
+    }
+
+
+    .manager-brand {
+        font-size: 18px;
+    }
+
+
+    .manager-subtitle {
+        font-size: 12px;
+    }
+
+
+    .view-portal-button {
+        min-height: 42px;
+
+        padding: 8px 11px;
+
+        font-size: 12px;
+    }
+
+
+    .manager-main {
+        width: calc(100% - 20px);
+
+        padding: 15px 0 45px;
+    }
+
+
+    .manager-section {
+        padding: 17px;
+
+        border-radius: 15px;
+    }
+
+
+    .section-heading {
+        flex-direction: column;
+
+        gap: 14px;
+    }
+
+
+    .section-heading h1 {
+        font-size: 21px;
+    }
+
+
+    .section-heading h2 {
+        font-size: 19px;
+    }
+
+
+    .primary-button {
+        width: 100%;
+    }
+
+
+    .event-manager-card {
+        grid-template-columns: 1fr;
+
+        gap: 13px;
+
+        padding: 15px;
+    }
+
+
+    .event-manager-title {
+        font-size: 17px;
+    }
+
+
+    .event-manager-actions {
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 7px;
+    }
+
+
+    .action-button {
+        width: 100%;
+
+        min-height: 44px;
+
+        padding: 8px 5px;
+
+        font-size: 12px;
+    }
+
+
+    .event-manager-image {
+        width: 100%;
+        height: 170px;
+    }
+
+
+    .form-row {
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+
+    .form-group input[type="date"],
+    .form-group input[type="time"] {
+        width: 100%;
+    }
+
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+
+    .form-actions button {
+        width: 100%;
+    }
+
+
+    .modal {
+        align-items: flex-end;
+
+        padding: 0;
+    }
+
+
+    .modal-content {
+        width: 100%;
+
+        border-radius: 18px 18px 0 0;
+
+        padding: 22px 18px;
+    }
+
+
+    .modal-actions {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+    }
+
+
+    .modal-actions button {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================
+   小さいスマホ
+========================================= */
+
+@media (max-width: 380px) {
+
+    .manager-main {
+        width: calc(100% - 14px);
+    }
+
+
+    .manager-section {
+        padding: 14px;
+    }
+
+
+    .manager-brand {
+        font-size: 17px;
+    }
+
+
+    .view-portal-button {
+        font-size: 11px;
+
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+
+    .event-manager-actions {
+        grid-template-columns: 1fr;
+    }
+
+}
+/* =========================================
+   管理画面 改善版
+========================================= */
+
+/* 登録ボタンをより分かりやすく */
+
+#newEventButton {
+    min-width: 190px;
+    min-height: 50px;
+
+    font-size: 16px;
+
+    box-shadow:
+        0 3px 8px rgba(36, 116, 71, 0.18);
+}
+
+
+/* 催事カードを見やすく */
+
+.event-manager-card {
+    position: relative;
+
+    border-left: 5px solid #247447;
+}
+
+
+/* 催事タイトルをさらに見やすく */
+
+.event-manager-title {
+    font-size: 19px;
+    line-height: 1.5;
+}
+
+
+/* 日付を強調 */
+
+.event-manager-date {
+    margin-top: 7px;
+
+    font-size: 15px;
+}
+
+
+/* 操作ボタン */
+
+.action-button {
+    min-width: 72px;
+    min-height: 44px;
+
+    font-size: 14px;
+}
+
+
+/* 編集ボタン */
+
+.action-button:not(.delete) {
+    background: #ffffff;
+}
+
+
+/* 削除ボタン */
+
+.action-button.delete {
+    background: #fff5f5;
+
+    color: #c62828;
+
+    border-color: #efbcbc;
+}
+
+
+/* 保存ボタンを強調 */
+
+.save-button {
+    min-height: 52px;
+
+    font-size: 16px;
+
+    box-shadow:
+        0 3px 8px rgba(36, 116, 71, 0.18);
+}
+
+
+/* 入力欄を少し大きく */
+
+.form-group input[type="text"],
+.form-group input[type="url"],
+.form-group input[type="date"],
+.form-group input[type="time"],
+.form-group textarea {
+    min-height: 52px;
+
+    font-size: 16px;
+}
+
+
+/* 画像プレビュー */
+
+.image-preview {
+    min-height: 220px;
+
+    background: #f8faf9;
+}
+
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 400px;
+
+    object-fit: contain;
+}
+
+
+/* フォームの見出し */
+
+.form-section {
+    border-top: 5px solid #247447;
+}
+
+
+/* スマホ */
+
+@media (max-width: 600px) {
+
+    #newEventButton {
+        width: 100%;
+
+        min-height: 52px;
+
+        font-size: 16px;
+    }
+
+
+    .event-manager-card {
+        border-left-width: 4px;
+    }
+
+
+    .event-manager-title {
+        font-size: 18px;
+    }
+
+
+    .action-button {
+        min-height: 48px;
+
+        font-size: 14px;
+    }
+
+
+    .event-manager-actions {
+        grid-template-columns: 1fr;
+    }
+
+
+    .save-button {
+        min-height: 54px;
+
+        font-size: 17px;
+    }
+
+
+    .image-preview {
+        min-height: 200px;
+    }
+
+}
+
+
+/* iPad */
+
+@media (min-width: 601px) and (max-width: 900px) {
+
+    .event-manager-actions {
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, minmax(90px, 1fr));
+
+        width: 100%;
+    }
+
+
+    .action-button {
+        min-height: 46px;
+    }
+
+}

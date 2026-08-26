@@ -1,0 +1,569 @@
+```html
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#8b1e3f"
+    >
+
+    <meta
+        name="description"
+        content="Camellia Portal Zoomスケジュール"
+    >
+
+    <title>Camellia Portal</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     ヘッダー
+===================================== -->
+
+<header class="app-header">
+
+    <button
+        id="menuButton"
+        class="menu-button"
+        aria-label="メニューを開く"
+        aria-expanded="false"
+    >
+        ☰
+    </button>
+
+
+    <div class="header-title">
+        <h1>Camellia Portal</h1>
+    </div>
+
+</header>
+
+
+
+<!-- =====================================
+     サイドメニュー
+===================================== -->
+
+<div
+    id="menuOverlay"
+    class="menu-overlay"
+></div>
+
+
+<aside
+    id="sideMenu"
+    class="side-menu"
+    aria-hidden="true"
+>
+
+    <div class="side-menu-header">
+
+        <div class="side-menu-title">
+            Camellia Portal
+        </div>
+
+        <button
+            id="closeMenuButton"
+            class="close-menu-button"
+            aria-label="メニューを閉じる"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <nav class="menu-list">
+
+
+        <button
+            class="menu-item"
+            data-menu="home"
+        >
+            🏠 ホーム
+        </button>
+
+
+        <button
+            class="menu-item"
+            data-menu="schedule"
+        >
+            📋 予定表
+        </button>
+
+
+        <button
+            class="menu-item"
+            data-menu="calendar"
+        >
+            📅 カレンダー
+        </button>
+
+
+        <div class="menu-section-title">
+            📱 使い方
+        </div>
+
+
+        <button
+            class="menu-item"
+            data-menu="iphone"
+        >
+            🍎 iPhone
+        </button>
+
+
+        <button
+            class="menu-item"
+            data-menu="ipad"
+        >
+            🟦 iPad
+        </button>
+
+
+        <button
+            class="menu-item"
+            data-menu="android"
+        >
+            🤖 Android
+        </button>
+
+
+    </nav>
+
+</aside>
+
+
+
+<!-- =====================================
+     表示切替
+===================================== -->
+
+<main class="app-main">
+
+
+    <!-- =================================
+         ホーム
+    ================================== -->
+
+    <section
+        id="homeView"
+        class="view active-view"
+    >
+
+        <div class="page-title">
+
+            <h2>
+                Zoomスケジュール
+            </h2>
+
+            <p>
+                最新の予定をご確認いただけます。
+            </p>
+
+        </div>
+
+
+        <div
+            class="view-tabs"
+            role="tablist"
+        >
+
+            <button
+                id="scheduleTab"
+                class="view-tab active"
+                data-view="schedule"
+            >
+                📋 予定表
+            </button>
+
+
+            <button
+                id="calendarTab"
+                class="view-tab"
+                data-view="calendar"
+            >
+                📅 カレンダー
+            </button>
+
+        </div>
+
+
+        <div id="scheduleContent">
+
+            <section class="schedule-section">
+
+                <h3>
+                    📢 今日のZoom
+                </h3>
+
+                <div id="todayEvents">
+                    読み込み中...
+                </div>
+
+            </section>
+
+
+            <section class="schedule-section">
+
+                <h3>
+                    ⏭ 次回のZoom
+                </h3>
+
+                <div id="nextEvent">
+                    読み込み中...
+                </div>
+
+            </section>
+
+
+            <section class="schedule-section">
+
+                <h3>
+                    📅 今後の予定
+                </h3>
+
+                <div id="allEvents">
+                    読み込み中...
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <div
+            id="calendarContent"
+            class="calendar-content"
+            style="display:none;"
+        >
+
+            <div class="calendar-header">
+
+                <button
+                    id="previousMonth"
+                    class="calendar-nav-button"
+                    aria-label="前の月"
+                >
+                    ◀
+                </button>
+
+
+                <h3 id="calendarMonth">
+                    2026年8月
+                </h3>
+
+
+                <button
+                    id="nextMonth"
+                    class="calendar-nav-button"
+                    aria-label="次の月"
+                >
+                    ▶
+                </button>
+
+            </div>
+
+
+            <div class="calendar-weekdays">
+
+                <div>月</div>
+                <div>火</div>
+                <div>水</div>
+                <div>木</div>
+                <div>金</div>
+                <div>土</div>
+                <div>日</div>
+
+            </div>
+
+
+            <div id="calendarGrid">
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================
+         使い方：iPhone
+    ================================== -->
+
+    <section
+        id="iphoneView"
+        class="view"
+    >
+
+        <div class="guide-page">
+
+            <h2>
+                🍎 iPhoneでの使い方
+            </h2>
+
+            <p class="guide-intro">
+                Camellia Portalをホーム画面に追加すると、
+                次回からすぐに開くことができます。
+            </p>
+
+
+            <div class="guide-card">
+
+                <h3>
+                    パターン①
+                </h3>
+
+                <p>
+                    Safariに「共有」ボタン
+                    （□↑）が表示されている場合
+                </p>
+
+                <ol>
+
+                    <li>
+                        SafariでCamellia Portalを開きます。
+                    </li>
+
+                    <li>
+                        「共有」ボタンを押します。
+                    </li>
+
+                    <li>
+                        「ホーム画面に追加」を選びます。
+                    </li>
+
+                    <li>
+                        「追加」を押します。
+                    </li>
+
+                </ol>
+
+                <div class="guide-image-placeholder">
+                    ここに共有ボタンの画像を表示
+                </div>
+
+            </div>
+
+
+            <div class="guide-card">
+
+                <h3>
+                    パターン②
+                </h3>
+
+                <p>
+                    「…」から共有する場合
+                </p>
+
+                <ol>
+
+                    <li>
+                        SafariでCamellia Portalを開きます。
+                    </li>
+
+                    <li>
+                        「…」を押します。
+                    </li>
+
+                    <li>
+                        「共有」を押します。
+                    </li>
+
+                    <li>
+                        「表示を増やす」などから
+                        「ホーム画面に追加」を選びます。
+                    </li>
+
+                    <li>
+                        「追加」を押します。
+                    </li>
+
+                </ol>
+
+                <div class="guide-image-placeholder">
+                    ここに操作画面の画像を表示
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================
+         使い方：iPad
+    ================================== -->
+
+    <section
+        id="ipadView"
+        class="view"
+    >
+
+        <div class="guide-page">
+
+            <h2>
+                🟦 iPadでの使い方
+            </h2>
+
+            <p class="guide-intro">
+                iPadでのホーム画面への追加方法を
+                こちらで確認できます。
+            </p>
+
+
+            <div class="guide-card">
+
+                <h3>
+                    ホーム画面に追加
+                </h3>
+
+                <ol>
+
+                    <li>
+                        SafariでCamellia Portalを開きます。
+                    </li>
+
+                    <li>
+                        共有メニューを開きます。
+                    </li>
+
+                    <li>
+                        「ホーム画面に追加」を選びます。
+                    </li>
+
+                    <li>
+                        「追加」を押します。
+                    </li>
+
+                </ol>
+
+                <div class="guide-image-placeholder">
+                    ここにiPadの操作画像を表示
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================
+         使い方：Android
+    ================================== -->
+
+    <section
+        id="androidView"
+        class="view"
+    >
+
+        <div class="guide-page">
+
+            <h2>
+                🤖 Androidでの使い方
+            </h2>
+
+            <p class="guide-intro">
+                AndroidではChromeからホーム画面に
+                追加できます。
+            </p>
+
+
+            <div class="guide-card">
+
+                <h3>
+                    ホーム画面に追加
+                </h3>
+
+                <ol>
+
+                    <li>
+                        ChromeでCamellia Portalを開きます。
+                    </li>
+
+                    <li>
+                        右上の「︙」を押します。
+                    </li>
+
+                    <li>
+                        「ホーム画面に追加」または
+                        「アプリをインストール」を選びます。
+                    </li>
+
+                    <li>
+                        「追加」または「インストール」を押します。
+                    </li>
+
+                </ol>
+
+                <div class="guide-image-placeholder">
+                    ここにAndroidの操作画像を表示
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================
+     詳細モーダル
+===================================== -->
+
+<div
+    id="eventModal"
+    class="modal"
+>
+
+    <div class="modal-content">
+
+        <button
+            id="closeEventModal"
+            class="modal-close"
+            aria-label="閉じる"
+        >
+            ×
+        </button>
+
+
+        <div id="eventDetail">
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
+```

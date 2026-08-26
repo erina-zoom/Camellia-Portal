@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#247447"
+    >
+
+    <title>Camellia Portal 管理画面</title>
+
+    <link
+        rel="stylesheet"
+        href="manager.css"
+    >
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     ヘッダー
+===================================== -->
+
+<header class="manager-header">
+
+    <div class="manager-header-inner">
+
+        <div>
+
+            <div class="manager-brand">
+                Camellia Portal
+            </div>
+
+            <div class="manager-subtitle">
+                管理画面
+            </div>
+
+        </div>
+
+
+        <a
+            href="index.html"
+            class="view-portal-button"
+        >
+            利用者画面を見る
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================
+     メイン
+===================================== -->
+
+<main class="manager-main">
+
+
+    <!-- =================================
+         登録済み催事
+    ================================== -->
+
+    <section class="manager-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h1>
+                    登録済みの催事
+                </h1>
+
+                <p>
+                    登録されているZoom予定を管理できます。
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="newEventButton"
+                class="primary-button"
+            >
+                ＋ 新しい催事を登録
+            </button>
+
+        </div>
+
+
+        <div
+            id="eventList"
+            class="event-list"
+        >
+
+            <!-- JavaScriptで表示 -->
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================
+         催事登録・編集
+    ================================== -->
+
+    <section
+        id="eventFormSection"
+        class="manager-section form-section"
+    >
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2 id="formTitle">
+                    新しい催事を登録
+                </h2>
+
+                <p>
+                    必要な情報を入力して保存してください。
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form
+            id="eventForm"
+            novalidate
+        >
+
+
+            <!-- 催事名 -->
+
+            <div class="form-group">
+
+                <label for="eventTitle">
+                    催事名・Zoom内容
+                </label>
+
+                <input
+                    type="text"
+                    id="eventTitle"
+                    name="eventTitle"
+                    placeholder="例：○○セミナー"
+                    maxlength="100"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- 日付 -->
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="eventDate">
+                        開催日
+                    </label>
+
+                    <input
+                        type="date"
+                        id="eventDate"
+                        name="eventDate"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- 開始時間 -->
+
+                <div class="form-group">
+
+                    <label for="startTime">
+                        開始時間
+                    </label>
+
+                    <input
+                        type="time"
+                        id="startTime"
+                        name="startTime"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- 終了時間 -->
+
+                <div class="form-group">
+
+                    <label for="endTime">
+                        終了時間
+                    </label>
+
+                    <input
+                        type="time"
+                        id="endTime"
+                        name="endTime"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Zoom URL -->
+
+            <div class="form-group">
+
+                <label for="zoomUrl">
+                    Zoom URL
+                </label>
+
+                <input
+                    type="url"
+                    id="zoomUrl"
+                    name="zoomUrl"
+                    placeholder="https://zoom.us/..."
+                    inputmode="url"
+                >
+
+                <p class="field-help">
+                    Zoomミーティングの参加URLを入力してください。
+                </p>
+
+            </div>
+
+
+
+            <!-- 画像 -->
+
+            <div class="form-group">
+
+                <label for="eventImage">
+                    催事画像
+                </label>
+
+                <input
+                    type="file"
+                    id="eventImage"
+                    name="eventImage"
+                    accept="image/*"
+                >
+
+                <p class="field-help">
+                    JPG・PNGなどの画像を選択できます。
+                </p>
+
+
+                <div
+                    id="imagePreview"
+                    class="image-preview"
+                >
+
+                    <span>
+                        画像を選択するとここに表示されます
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 詳細 -->
+
+            <div class="form-group">
+
+                <label for="eventDescription">
+                    詳細・説明
+                </label>
+
+                <textarea
+                    id="eventDescription"
+                    name="eventDescription"
+                    rows="5"
+                    maxlength="1000"
+                    placeholder="催事についての説明があれば入力してください。"
+                ></textarea>
+
+            </div>
+
+
+
+            <!-- ボタン -->
+
+            <div class="form-actions">
+
+                <button
+                    type="button"
+                    id="cancelButton"
+                    class="secondary-button"
+                >
+                    キャンセル
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-button save-button"
+                >
+                    💾 保存する
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </section>
+
+</main>
+
+
+
+<!-- =====================================
+     削除確認モーダル
+===================================== -->
+
+<div
+    id="deleteModal"
+    class="modal"
+    aria-hidden="true"
+>
+
+    <div class="modal-content">
+
+        <h2>
+            催事を削除しますか？
+        </h2>
+
+        <p id="deleteMessage">
+            この催事を削除します。
+        </p>
+
+
+        <div class="modal-actions">
+
+            <button
+                type="button"
+                id="cancelDeleteButton"
+                class="secondary-button"
+            >
+                キャンセル
+            </button>
+
+
+            <button
+                type="button"
+                id="confirmDeleteButton"
+                class="delete-button"
+            >
+                🗑 削除する
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================
+     メッセージ
+===================================== -->
+
+<div
+    id="managerMessage"
+    class="manager-message"
+    aria-live="polite"
+></div>
+
+
+
+<script src="manager.js"></script>
+
+</body>
+
+</html>
