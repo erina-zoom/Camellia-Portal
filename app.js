@@ -1466,3 +1466,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderCalendar();
 
 });
+
+    /* =====================================
+       自動更新
+       30秒ごとにD1から最新データを取得
+    ===================================== */
+
+    setInterval(
+        async () => {
+
+            await loadEvents();
+
+            renderSchedule();
+
+            renderCalendar();
+
+        },
+        30000
+    );
