@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
        D1 / API
     ===================================== */
 
-    const API_BASE = "/api/events";
+    const API_BASE = "https://camellia-portal.tomoya19980427goku.workers.dev/api/events";
 
     let events = [];
 
