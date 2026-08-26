@@ -1455,7 +1455,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
 
 
-    /* =====================================
+      /* =====================================
        初期表示
     ===================================== */
 
@@ -1465,7 +1465,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     renderCalendar();
 
-});
 
     /* =====================================
        自動更新
@@ -1484,3 +1483,5 @@ document.addEventListener("DOMContentLoaded", async () => {
         },
         30000
     );
+
+});
