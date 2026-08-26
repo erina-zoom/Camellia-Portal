@@ -3,75 +3,171 @@
    app.js
 ========================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+
 
     /* =====================================
        要素取得
     ===================================== */
 
-    const menuButton = document.getElementById("menuButton");
-    const closeMenuButton = document.getElementById("closeMenuButton");
-    const sideMenu = document.getElementById("sideMenu");
-    const menuOverlay = document.getElementById("menuOverlay");
+    const menuButton =
+        document.getElementById("menuButton");
 
-    const scheduleTab = document.getElementById("scheduleTab");
-    const calendarTab = document.getElementById("calendarTab");
+    const closeMenuButton =
+        document.getElementById("closeMenuButton");
 
-    const scheduleContent = document.getElementById("scheduleContent");
-    const calendarContent = document.getElementById("calendarContent");
+    const sideMenu =
+        document.getElementById("sideMenu");
 
-    const previousMonth = document.getElementById("previousMonth");
-    const nextMonth = document.getElementById("nextMonth");
-    const calendarMonth = document.getElementById("calendarMonth");
-    const calendarGrid = document.getElementById("calendarGrid");
+    const menuOverlay =
+        document.getElementById("menuOverlay");
 
-    const eventModal = document.getElementById("eventModal");
-    const closeEventModal = document.getElementById("closeEventModal");
-    const eventDetail = document.getElementById("eventDetail");
 
-    const menuItems = document.querySelectorAll(".menu-item");
-    const views = document.querySelectorAll(".view");
+    const scheduleTab =
+        document.getElementById("scheduleTab");
+
+    const calendarTab =
+        document.getElementById("calendarTab");
+
+
+    const scheduleContent =
+        document.getElementById("scheduleContent");
+
+    const calendarContent =
+        document.getElementById("calendarContent");
+
+
+    const previousMonth =
+        document.getElementById("previousMonth");
+
+    const nextMonth =
+        document.getElementById("nextMonth");
+
+    const calendarMonth =
+        document.getElementById("calendarMonth");
+
+    const calendarGrid =
+        document.getElementById("calendarGrid");
+
+
+    const eventModal =
+        document.getElementById("eventModal");
+
+    const closeEventModal =
+        document.getElementById("closeEventModal");
+
+    const eventDetail =
+        document.getElementById("eventDetail");
+
+
+    const menuItems =
+        document.querySelectorAll(".menu-item");
+
+    const views =
+        document.querySelectorAll(".view");
 
 
     /* =====================================
-       仮データ
-       
-       現段階ではテスト用。
-       後でCloudflareから取得する。
+       Cloudflare API
     ===================================== */
 
-    const sampleEvents = [
-        {
-            id: 1,
-            title: "Camellia Zoom テスト",
-            date: "2026-09-01",
-            startTime: "19:00",
-            endTime: "20:00",
-            zoomUrl: "https://zoom.us/",
-            image: "",
-            description: "Camellia Portalのテスト用予定です。"
-        },
-        {
-            id: 2,
-            title: "カメリアグループ Zoom",
-            date: "2026-09-05",
-            startTime: "13:00",
-            endTime: "14:00",
-            zoomUrl: "https://zoom.us/",
-            image: "",
-            description: "2つ目のテスト予定です。"
+    const API_BASE = "/api/events";
+
+    let events = [];
+
+
+    /* =====================================
+       D1から催事一覧を取得
+    ===================================== */
+
+    async function loadEvents() {
+
+        try {
+
+            const response =
+                await fetch(API_BASE);
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    `API error: ${response.status}`
+                );
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (!data.success) {
+
+                throw new Error(
+                    data.error ||
+                    "催事データを取得できませんでした。"
+                );
+
+            }
+
+
+            events =
+                Array.isArray(data.events)
+
+                    ? data.events.map(event => ({
+
+                        id:
+                            event.id,
+
+                        title:
+                            event.title || "",
+
+                        date:
+                            event.event_date || "",
+
+                        startTime:
+                            event.start_time || "",
+
+                        endTime:
+                            event.end_time || "",
+
+                        zoomUrl:
+                            event.zoom_url || "",
+
+                        image:
+                            event.image_url || "",
+
+                        description:
+                            event.description || ""
+
+                    }))
+
+                    : [];
+
+
+        } catch (error) {
+
+
+            console.error(
+                "催事データ取得エラー:",
+                error
+            );
+
+
+            events = [];
+
         }
-    ];
 
-
-    let events = [...sampleEvents];
+    }
 
 
     /* =====================================
        カレンダー現在表示月
     ===================================== */
 
-    let calendarDate = new Date();
+    let calendarDate =
+        new Date();
+
 
     calendarDate.setDate(1);
 
@@ -83,12 +179,25 @@ document.addEventListener("DOMContentLoaded", () => {
     function openMenu() {
 
         sideMenu.classList.add("show");
+
         menuOverlay.classList.add("show");
 
-        sideMenu.setAttribute("aria-hidden", "false");
-        menuButton.setAttribute("aria-expanded", "true");
 
-        document.body.style.overflow = "hidden";
+        sideMenu.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+
+        document.body.style.overflow =
+            "hidden";
+
     }
 
 
@@ -99,142 +208,243 @@ document.addEventListener("DOMContentLoaded", () => {
     function closeMenu() {
 
         sideMenu.classList.remove("show");
+
         menuOverlay.classList.remove("show");
 
-        sideMenu.setAttribute("aria-hidden", "true");
-        menuButton.setAttribute("aria-expanded", "false");
 
-        document.body.style.overflow = "";
+        sideMenu.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+
+        document.body.style.overflow =
+            "";
+
     }
 
 
-    menuButton.addEventListener("click", openMenu);
+    menuButton.addEventListener(
+        "click",
+        openMenu
+    );
 
-    closeMenuButton.addEventListener("click", closeMenu);
 
-    menuOverlay.addEventListener("click", closeMenu);
+    closeMenuButton.addEventListener(
+        "click",
+        closeMenu
+    );
+
+
+    menuOverlay.addEventListener(
+        "click",
+        closeMenu
+    );
 
 
     /* =====================================
        Escapeキーでメニューを閉じる
     ===================================== */
 
-    document.addEventListener("keydown", (event) => {
+    document.addEventListener(
+        "keydown",
+        (event) => {
 
-        if (event.key === "Escape") {
+            if (
+                event.key === "Escape"
+            ) {
 
-            closeMenu();
+                closeMenu();
 
-            closeModal();
+                closeModal();
+
+            }
 
         }
-
-    });
+    );
 
 
     /* =====================================
        メニューからページ切り替え
     ===================================== */
 
-    menuItems.forEach((item) => {
+    menuItems.forEach(
+        (item) => {
 
-        item.addEventListener("click", () => {
+            item.addEventListener(
+                "click",
+                () => {
 
-            const menu = item.dataset.menu;
+                    const menu =
+                        item.dataset.menu;
 
-            closeMenu();
 
-            switchView(menu);
+                    closeMenu();
 
-        });
 
-    });
+                    switchView(menu);
+
+                }
+            );
+
+        }
+    );
 
 
     /* =====================================
        ページ切り替え
     ===================================== */
 
-    function switchView(viewName) {
+    function switchView(
+        viewName
+    ) {
 
-        views.forEach((view) => {
+        views.forEach(
+            (view) => {
 
-            view.classList.remove("active-view");
+                view.classList.remove(
+                    "active-view"
+                );
 
-        });
+            }
+        );
 
 
-        if (viewName === "home" || viewName === "schedule") {
+        if (
+            viewName === "home" ||
+            viewName === "schedule"
+        ) {
 
-            document.getElementById("homeView")
-                .classList.add("active-view");
+            document
+                .getElementById("homeView")
+                .classList.add(
+                    "active-view"
+                );
+
 
             showSchedule();
 
+
             window.scrollTo({
+
                 top: 0,
+
                 behavior: "smooth"
+
             });
 
+
             return;
+
         }
 
 
-        if (viewName === "calendar") {
+        if (
+            viewName === "calendar"
+        ) {
 
-            document.getElementById("homeView")
-                .classList.add("active-view");
+            document
+                .getElementById("homeView")
+                .classList.add(
+                    "active-view"
+                );
+
 
             showCalendar();
 
+
             window.scrollTo({
+
                 top: 0,
+
                 behavior: "smooth"
+
             });
 
+
             return;
+
         }
 
 
-        if (viewName === "iphone") {
+        if (
+            viewName === "iphone"
+        ) {
 
-            document.getElementById("iphoneView")
-                .classList.add("active-view");
+            document
+                .getElementById("iphoneView")
+                .classList.add(
+                    "active-view"
+                );
+
 
             window.scrollTo({
+
                 top: 0,
+
                 behavior: "smooth"
+
             });
 
+
             return;
+
         }
 
 
-        if (viewName === "ipad") {
+        if (
+            viewName === "ipad"
+        ) {
 
-            document.getElementById("ipadView")
-                .classList.add("active-view");
+            document
+                .getElementById("ipadView")
+                .classList.add(
+                    "active-view"
+                );
+
 
             window.scrollTo({
+
                 top: 0,
+
                 behavior: "smooth"
+
             });
 
+
             return;
+
         }
 
 
-        if (viewName === "android") {
+        if (
+            viewName === "android"
+        ) {
 
-            document.getElementById("androidView")
-                .classList.add("active-view");
+            document
+                .getElementById("androidView")
+                .classList.add(
+                    "active-view"
+                );
+
 
             window.scrollTo({
+
                 top: 0,
+
                 behavior: "smooth"
+
             });
 
+
             return;
+
         }
 
     }
@@ -246,11 +456,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showSchedule() {
 
-        scheduleTab.classList.add("active");
-        calendarTab.classList.remove("active");
+        scheduleTab.classList.add(
+            "active"
+        );
 
-        scheduleContent.style.display = "block";
-        calendarContent.style.display = "none";
+        calendarTab.classList.remove(
+            "active"
+        );
+
+
+        scheduleContent.style.display =
+            "block";
+
+        calendarContent.style.display =
+            "none";
+
 
         renderSchedule();
 
@@ -263,52 +483,100 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showCalendar() {
 
-        scheduleTab.classList.remove("active");
-        calendarTab.classList.add("active");
+        scheduleTab.classList.remove(
+            "active"
+        );
 
-        scheduleContent.style.display = "none";
-        calendarContent.style.display = "block";
+        calendarTab.classList.add(
+            "active"
+        );
+
+
+        scheduleContent.style.display =
+            "none";
+
+        calendarContent.style.display =
+            "block";
+
 
         renderCalendar();
 
     }
 
 
-    scheduleTab.addEventListener("click", showSchedule);
+    scheduleTab.addEventListener(
+        "click",
+        showSchedule
+    );
 
-    calendarTab.addEventListener("click", showCalendar);
+
+    calendarTab.addEventListener(
+        "click",
+        showCalendar
+    );
 
 
     /* =====================================
        日付フォーマット
     ===================================== */
 
-    function formatDate(dateString) {
+    function formatDate(
+        dateString
+    ) {
 
-        const date = new Date(`${dateString}T00:00:00`);
+        const date =
+            new Date(
+                `${dateString}T00:00:00`
+            );
 
-        if (Number.isNaN(date.getTime())) {
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
 
             return dateString;
 
         }
 
 
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1;
-        const day = date.getDate();
+        const year =
+            date.getFullYear();
+
+
+        const month =
+            date.getMonth() + 1;
+
+
+        const day =
+            date.getDate();
+
 
         const weekdays = [
+
             "日",
+
             "月",
+
             "火",
+
             "水",
+
             "木",
+
             "金",
+
             "土"
+
         ];
 
-        const weekday = weekdays[date.getDay()];
+
+        const weekday =
+            weekdays[
+                date.getDay()
+            ];
+
 
         return `${year}年${month}月${day}日（${weekday}）`;
 
@@ -319,166 +587,257 @@ document.addEventListener("DOMContentLoaded", () => {
        イベントカード
     ===================================== */
 
-    function createEventCard(event) {
+    function createEventCard(
+        event
+    ) {
 
-    const card = document.createElement("article");
-
-    card.className = "event-card";
-
-    card.dataset.eventId = event.id;
-
-
-    /* =====================================
-       画像
-    ===================================== */
-
-    if (event.image) {
-
-        const image = document.createElement("img");
-
-        image.className = "event-image";
-
-        image.src = event.image;
-
-        image.alt = event.title || "催事画像";
-
-        image.loading = "lazy";
-
-        image.addEventListener("error", () => {
-            image.remove();
-        });
-
-        card.appendChild(image);
-
-    }
+        const card =
+            document.createElement(
+                "article"
+            );
 
 
-    /* =====================================
-       日付
-    ===================================== */
-
-    const date = document.createElement("div");
-
-    date.className = "event-date";
-
-    date.textContent = formatDate(event.date);
+        card.className =
+            "event-card";
 
 
-    /* =====================================
-       時間
-    ===================================== */
-
-    const time = document.createElement("div");
-
-    time.className = "event-time";
-
-    if (event.startTime && event.endTime) {
-
-        time.textContent =
-            `${event.startTime} ～ ${event.endTime}`;
-
-    } else if (event.startTime) {
-
-        time.textContent =
-            event.startTime;
-
-    }
+        card.dataset.eventId =
+            event.id;
 
 
-    /* =====================================
-       タイトル
-    ===================================== */
+        /* =====================================
+           画像
+        ===================================== */
 
-    const title = document.createElement("div");
+        if (event.image) {
 
-    title.className = "event-title";
-
-    title.textContent =
-        event.title || "催事";
-
-
-    /* =====================================
-       説明
-    ===================================== */
-
-    if (event.description) {
-
-        const description =
-            document.createElement("div");
-
-        description.className =
-            "event-description";
-
-        description.textContent =
-            event.description;
-
-        card.appendChild(description);
-
-    }
+            const image =
+                document.createElement(
+                    "img"
+                );
 
 
-    card.appendChild(date);
-    card.appendChild(time);
-    card.appendChild(title);
+            image.className =
+                "event-image";
 
 
-    /* =====================================
-       Zoom参加ボタン
-    ===================================== */
-
-    if (event.zoomUrl) {
-
-        const zoomButton =
-            document.createElement("a");
-
-        zoomButton.className =
-            "zoom-btn";
-
-        zoomButton.href =
-            event.zoomUrl;
-
-        zoomButton.target =
-            "_blank";
-
-        zoomButton.rel =
-            "noopener noreferrer";
-
-        zoomButton.textContent =
-            "Zoomに参加する";
+            image.src =
+                event.image;
 
 
-        zoomButton.addEventListener(
+            image.alt =
+                event.title ||
+                "催事画像";
+
+
+            image.loading =
+                "lazy";
+
+
+            image.addEventListener(
+                "error",
+                () => {
+
+                    image.remove();
+
+                }
+            );
+
+
+            card.appendChild(
+                image
+            );
+
+        }
+
+
+        /* =====================================
+           日付
+        ===================================== */
+
+        const date =
+            document.createElement(
+                "div"
+            );
+
+
+        date.className =
+            "event-date";
+
+
+        date.textContent =
+            formatDate(
+                event.date
+            );
+
+
+        /* =====================================
+           時間
+        ===================================== */
+
+        const time =
+            document.createElement(
+                "div"
+            );
+
+
+        time.className =
+            "event-time";
+
+
+        if (
+            event.startTime &&
+            event.endTime
+        ) {
+
+            time.textContent =
+                `${event.startTime} ～ ${event.endTime}`;
+
+        }
+
+        else if (
+            event.startTime
+        ) {
+
+            time.textContent =
+                event.startTime;
+
+        }
+
+
+        /* =====================================
+           タイトル
+        ===================================== */
+
+        const title =
+            document.createElement(
+                "div"
+            );
+
+
+        title.className =
+            "event-title";
+
+
+        title.textContent =
+            event.title ||
+            "催事";
+
+
+        /* =====================================
+           説明
+        ===================================== */
+
+        if (
+            event.description
+        ) {
+
+            const description =
+                document.createElement(
+                    "div"
+                );
+
+
+            description.className =
+                "event-description";
+
+
+            description.textContent =
+                event.description;
+
+
+            card.appendChild(
+                description
+            );
+
+        }
+
+
+        card.appendChild(
+            date
+        );
+
+
+        card.appendChild(
+            time
+        );
+
+
+        card.appendChild(
+            title
+        );
+
+
+        /* =====================================
+           Zoom参加ボタン
+        ===================================== */
+
+        if (
+            event.zoomUrl
+        ) {
+
+            const zoomButton =
+                document.createElement(
+                    "a"
+                );
+
+
+            zoomButton.className =
+                "zoom-btn";
+
+
+            zoomButton.href =
+                event.zoomUrl;
+
+
+            zoomButton.target =
+                "_blank";
+
+
+            zoomButton.rel =
+                "noopener noreferrer";
+
+
+            zoomButton.textContent =
+                "Zoomに参加する";
+
+
+            zoomButton.addEventListener(
+                "click",
+                (clickEvent) => {
+
+                    clickEvent.stopPropagation();
+
+                }
+            );
+
+
+            card.appendChild(
+                zoomButton
+            );
+
+        }
+
+
+        /* =====================================
+           カードクリック
+        ===================================== */
+
+        card.addEventListener(
             "click",
-            (clickEvent) => {
+            () => {
 
-                clickEvent.stopPropagation();
+                openEventModal(
+                    event
+                );
 
             }
         );
 
 
-        card.appendChild(zoomButton);
+        return card;
 
     }
-
-
-    /* =====================================
-       カードクリック
-    ===================================== */
-
-    card.addEventListener(
-        "click",
-        () => {
-
-            openEventModal(event);
-
-        }
-    );
-
-
-    return card;
-
-}
 
 
     /* =====================================
@@ -487,71 +846,133 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderSchedule() {
 
-        const todayEvents = document.getElementById("todayEvents");
-        const nextEvent = document.getElementById("nextEvent");
-        const allEvents = document.getElementById("allEvents");
+        const todayEvents =
+            document.getElementById(
+                "todayEvents"
+            );
 
 
-        todayEvents.innerHTML = "";
-        nextEvent.innerHTML = "";
-        allEvents.innerHTML = "";
+        const nextEvent =
+            document.getElementById(
+                "nextEvent"
+            );
 
 
-        if (!events.length) {
+        const allEvents =
+            document.getElementById(
+                "allEvents"
+            );
+
+
+        todayEvents.innerHTML =
+            "";
+
+
+        nextEvent.innerHTML =
+            "";
+
+
+        allEvents.innerHTML =
+            "";
+
+
+        if (
+            !events.length
+        ) {
 
             todayEvents.textContent =
                 "現在、登録されている予定はありません。";
 
+
             nextEvent.textContent =
                 "次回の予定はありません。";
 
+
             allEvents.textContent =
                 "今後の予定はありません。";
+
 
             return;
 
         }
 
 
-        const today = new Date();
+        const today =
+            new Date();
+
 
         const todayString =
+
             today.getFullYear() +
+
             "-" +
-            String(today.getMonth() + 1).padStart(2, "0") +
+
+            String(
+                today.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            ) +
+
             "-" +
-            String(today.getDate()).padStart(2, "0");
+
+            String(
+                today.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
 
 
-        const sortedEvents = [...events].sort((a, b) => {
+        const sortedEvents =
+            [...events].sort(
+                (a, b) => {
 
-            const dateA =
-                new Date(`${a.date}T${a.startTime}`);
-
-            const dateB =
-                new Date(`${b.date}T${b.startTime}`);
-
-            return dateA - dateB;
-
-        });
+                    const dateA =
+                        new Date(
+                            `${a.date}T${a.startTime}`
+                        );
 
 
-        const todayList = sortedEvents.filter(
-            event => event.date === todayString
-        );
+                    const dateB =
+                        new Date(
+                            `${b.date}T${b.startTime}`
+                        );
 
 
-        if (todayList.length) {
+                    return dateA - dateB;
 
-            todayList.forEach(event => {
+                }
+            );
 
-                todayEvents.appendChild(
-                    createEventCard(event)
-                );
 
-            });
+        const todayList =
+            sortedEvents.filter(
+                event =>
+                    event.date ===
+                    todayString
+            );
 
-        } else {
+
+        if (
+            todayList.length
+        ) {
+
+            todayList.forEach(
+                event => {
+
+                    todayEvents.appendChild(
+                        createEventCard(
+                            event
+                        )
+                    );
+
+                }
+            );
+
+        }
+
+        else {
 
             todayEvents.textContent =
                 "本日の予定はありません。";
@@ -559,25 +980,42 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        const now = new Date();
-
-        const upcoming = sortedEvents.filter(event => {
-
-            const eventDate =
-                new Date(`${event.date}T${event.startTime}`);
-
-            return eventDate > now;
-
-        });
+        const now =
+            new Date();
 
 
-        if (upcoming.length) {
+        const upcoming =
+            sortedEvents.filter(
+                event => {
 
-            nextEvent.appendChild(
-                createEventCard(upcoming[0])
+                    const eventDate =
+                        new Date(
+                            `${event.date}T${event.startTime}`
+                        );
+
+
+                    return (
+                        eventDate >
+                        now
+                    );
+
+                }
             );
 
-        } else {
+
+        if (
+            upcoming.length
+        ) {
+
+            nextEvent.appendChild(
+                createEventCard(
+                    upcoming[0]
+                )
+            );
+
+        }
+
+        else {
 
             nextEvent.textContent =
                 "次回の予定はありません。";
@@ -585,13 +1023,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        sortedEvents.forEach(event => {
+        sortedEvents.forEach(
+            event => {
 
-            allEvents.appendChild(
-                createEventCard(event)
-            );
+                allEvents.appendChild(
+                    createEventCard(
+                        event
+                    )
+                );
 
-        });
+            }
+        );
 
     }
 
@@ -602,23 +1044,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderCalendar() {
 
-        const year = calendarDate.getFullYear();
-        const month = calendarDate.getMonth();
+        const year =
+            calendarDate.getFullYear();
+
+
+        const month =
+            calendarDate.getMonth();
 
 
         calendarMonth.textContent =
             `${year}年${month + 1}月`;
 
 
-        calendarGrid.innerHTML = "";
+        calendarGrid.innerHTML =
+            "";
 
 
         const firstDay =
-            new Date(year, month, 1);
+            new Date(
+                year,
+                month,
+                1
+            );
 
 
         const lastDay =
-            new Date(year, month + 1, 0);
+            new Date(
+                year,
+                month + 1,
+                0
+            );
 
 
         let firstWeekday =
@@ -645,12 +1100,18 @@ document.addEventListener("DOMContentLoaded", () => {
         ) {
 
             const empty =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             empty.className =
                 "calendar-day calendar-empty";
 
-            calendarGrid.appendChild(empty);
+
+            calendarGrid.appendChild(
+                empty
+            );
 
         }
 
@@ -662,21 +1123,32 @@ document.addEventListener("DOMContentLoaded", () => {
         ) {
 
             const cell =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
-            cell.className = "calendar-day";
+
+            cell.className =
+                "calendar-day";
 
 
             const dayNumber =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             dayNumber.className =
                 "calendar-day-number";
 
-            dayNumber.textContent = day;
+
+            dayNumber.textContent =
+                day;
 
 
-            cell.appendChild(dayNumber);
+            cell.appendChild(
+                dayNumber
+            );
 
 
             const dateString =
@@ -685,40 +1157,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const dayEvents =
                 events.filter(
-                    event => event.date === dateString
+                    event =>
+                        event.date ===
+                        dateString
                 );
 
 
-            dayEvents.forEach(event => {
+            dayEvents.forEach(
+                event => {
 
-                const eventElement =
-                    document.createElement("div");
-
-                eventElement.className =
-                    "calendar-event";
-
-                eventElement.textContent =
-                    event.title;
+                    const eventElement =
+                        document.createElement(
+                            "div"
+                        );
 
 
-                eventElement.addEventListener(
-                    "click",
-                    (clickEvent) => {
-
-                        clickEvent.stopPropagation();
-
-                        openEventModal(event);
-
-                    }
-                );
+                    eventElement.className =
+                        "calendar-event";
 
 
-                cell.appendChild(eventElement);
+                    eventElement.textContent =
+                        event.title;
 
-            });
+
+                    eventElement.addEventListener(
+                        "click",
+                        (clickEvent) => {
+
+                            clickEvent.stopPropagation();
 
 
-            calendarGrid.appendChild(cell);
+                            openEventModal(
+                                event
+                            );
+
+                        }
+                    );
+
+
+                    cell.appendChild(
+                        eventElement
+                    );
+
+                }
+            );
+
+
+            calendarGrid.appendChild(
+                cell
+            );
 
         }
 
@@ -729,114 +1216,182 @@ document.addEventListener("DOMContentLoaded", () => {
        月移動
     ===================================== */
 
-    previousMonth.addEventListener("click", () => {
+    previousMonth.addEventListener(
+        "click",
+        () => {
 
-        calendarDate.setMonth(
-            calendarDate.getMonth() - 1
-        );
-
-        renderCalendar();
-
-    });
+            calendarDate.setMonth(
+                calendarDate.getMonth() - 1
+            );
 
 
-    nextMonth.addEventListener("click", () => {
+            renderCalendar();
 
-        calendarDate.setMonth(
-            calendarDate.getMonth() + 1
-        );
+        }
+    );
 
-        renderCalendar();
 
-    });
+    nextMonth.addEventListener(
+        "click",
+        () => {
+
+            calendarDate.setMonth(
+                calendarDate.getMonth() + 1
+            );
+
+
+            renderCalendar();
+
+        }
+    );
 
 
     /* =====================================
        詳細モーダル
     ===================================== */
 
-    function openEventModal(event) {
+    function openEventModal(
+        event
+    ) {
 
-        eventDetail.innerHTML = "";
+        eventDetail.innerHTML =
+            "";
 
 
         const title =
-            document.createElement("h2");
+            document.createElement(
+                "h2"
+            );
+
 
         title.textContent =
             event.title;
 
 
         const date =
-            document.createElement("p");
+            document.createElement(
+                "p"
+            );
+
 
         date.textContent =
-            formatDate(event.date);
+            formatDate(
+                event.date
+            );
 
 
         const time =
-            document.createElement("p");
+            document.createElement(
+                "p"
+            );
+
 
         time.textContent =
             `${event.startTime} ～ ${event.endTime}`;
 
 
-        eventDetail.appendChild(title);
-        eventDetail.appendChild(date);
-        eventDetail.appendChild(time);
+        eventDetail.appendChild(
+            title
+        );
 
 
-        if (event.image) {
+        eventDetail.appendChild(
+            date
+        );
+
+
+        eventDetail.appendChild(
+            time
+        );
+
+
+        if (
+            event.image
+        ) {
 
             const image =
-                document.createElement("img");
+                document.createElement(
+                    "img"
+                );
 
-            image.src = event.image;
 
-            image.alt = event.title;
+            image.src =
+                event.image;
 
-            image.style.width = "100%";
 
-            image.style.borderRadius = "12px";
+            image.alt =
+                event.title;
 
-            image.style.marginTop = "15px";
 
-            eventDetail.appendChild(image);
+            image.style.width =
+                "100%";
+
+
+            image.style.borderRadius =
+                "12px";
+
+
+            image.style.marginTop =
+                "15px";
+
+
+            eventDetail.appendChild(
+                image
+            );
 
         }
 
 
-        if (event.description) {
+        if (
+            event.description
+        ) {
 
             const description =
-                document.createElement("p");
+                document.createElement(
+                    "p"
+                );
+
 
             description.textContent =
                 event.description;
 
-            description.style.marginTop = "15px";
 
-            eventDetail.appendChild(description);
+            description.style.marginTop =
+                "15px";
+
+
+            eventDetail.appendChild(
+                description
+            );
 
         }
 
 
-        if (event.zoomUrl) {
+        if (
+            event.zoomUrl
+        ) {
 
             const zoomButton =
-                document.createElement("a");
+                document.createElement(
+                    "a"
+                );
+
 
             zoomButton.className =
                 "zoom-btn";
 
+
             zoomButton.href =
                 event.zoomUrl;
+
 
             zoomButton.target =
                 "_blank";
 
+
             zoomButton.rel =
                 "noopener noreferrer";
+
 
             zoomButton.textContent =
                 "Zoomに参加する";
@@ -849,9 +1404,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        eventModal.classList.add("show");
+        eventModal.classList.add(
+            "show"
+        );
 
-        document.body.style.overflow = "hidden";
+
+        document.body.style.overflow =
+            "hidden";
 
     }
 
@@ -862,9 +1421,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function closeModal() {
 
-        eventModal.classList.remove("show");
+        eventModal.classList.remove(
+            "show"
+        );
 
-        document.body.style.overflow = "";
+
+        document.body.style.overflow =
+            "";
 
     }
 
@@ -880,7 +1443,8 @@ document.addEventListener("DOMContentLoaded", () => {
         (event) => {
 
             if (
-                event.target === eventModal
+                event.target ===
+                eventModal
             ) {
 
                 closeModal();
@@ -894,6 +1458,8 @@ document.addEventListener("DOMContentLoaded", () => {
     /* =====================================
        初期表示
     ===================================== */
+
+    await loadEvents();
 
     renderSchedule();
 
