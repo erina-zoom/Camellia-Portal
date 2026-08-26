@@ -9,6 +9,14 @@
     "run_worker_first": true
   },
 
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "camellia-portal-db",
+      "database_id": "72cd4692-f11-476a-b9cd-8b4db42d5c81"
+    }
+  ],
+
   "observability": {
     "enabled": true
   }

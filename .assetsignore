@@ -2,3 +2,5 @@ worker.js
 wrangler.jsonc
 .gitattributes
 .assetsignore
+**/.git
+**/.wrangler
