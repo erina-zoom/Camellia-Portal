@@ -68,12 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================
-       設定
+       D1 / API
     ===================================== */
 
-    const STORAGE_KEY =
-        "camelliaPortalEvents";
-
+    const API_BASE = "/api/events";
 
     let events = [];
 
@@ -85,123 +83,85 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================
-       初期データ
-       
-       初回だけ表示するテストデータ
+       API通信
     ===================================== */
 
-    const initialEvents = [
-        {
-            id: createId(),
-            title: "Camellia Zoom テスト",
-            date: "2026-09-01",
-            startTime: "19:00",
-            endTime: "20:00",
-            zoomUrl: "https://zoom.us/",
-            image: "",
-            description: "テスト用の催事です。"
-        },
-        {
-            id: createId(),
-            title: "カメリアグループ Zoom",
-            date: "2026-09-05",
-            startTime: "13:00",
-            endTime: "14:00",
-            zoomUrl: "https://zoom.us/",
-            image: "",
-            description: "2つ目のテスト予定です。"
-        }
-    ];
+    async function apiRequest(url, options = {}) {
 
-
-    /* =====================================
-       ID生成
-    ===================================== */
-
-    function createId() {
-
-        return (
-            Date.now().toString(36) +
-            Math.random()
-                .toString(36)
-                .substring(2, 8)
-        );
-
-    }
-
-
-    /* =====================================
-       保存データ読み込み
-    ===================================== */
-
-    function loadEvents() {
-
-        try {
-
-            const saved =
-                localStorage.getItem(STORAGE_KEY);
-
-
-            if (saved) {
-
-                const parsed =
-                    JSON.parse(saved);
-
-
-                if (Array.isArray(parsed)) {
-
-                    events = parsed;
-
-                    return;
-
-                }
-
+        const response = await fetch(url, {
+            ...options,
+            headers: {
+                "Content-Type": "application/json",
+                ...(options.headers || {})
             }
+        });
 
+        let data = null;
+
+        try {
+            data = await response.json();
         } catch (error) {
-
-            console.error(
-                "データ読み込みエラー:",
-                error
-            );
-
+            data = null;
         }
 
+        if (!response.ok || !data || data.success === false) {
 
-        events = [...initialEvents];
+            throw new Error(
+                data?.error ||
+                `通信エラーが発生しました。（${response.status}）`
+            );
+        }
 
-        saveEvents();
-
+        return data;
     }
 
 
     /* =====================================
-       ブラウザへの一時保存
+       D1から催事一覧を取得
     ===================================== */
 
-    function saveEvents() {
+    async function loadEvents() {
 
         try {
 
-            localStorage.setItem(
-                STORAGE_KEY,
-                JSON.stringify(events)
+            const data = await apiRequest(
+                API_BASE,
+                {
+                    method: "GET"
+                }
             );
+
+            events = Array.isArray(data.events)
+                ? data.events.map(event => ({
+                    id: event.id,
+                    title: event.title || "",
+                    date: event.event_date || "",
+                    startTime: event.start_time || "",
+                    endTime: event.end_time || "",
+                    zoomUrl: event.zoom_url || "",
+                    image: event.image_url || "",
+                    description: event.description || ""
+                }))
+                : [];
+
+            renderEventList();
 
         } catch (error) {
 
             console.error(
-                "データ保存エラー:",
+                "催事一覧取得エラー:",
                 error
             );
+
+            events = [];
+
+            renderEventList();
 
             showMessage(
-                "データを保存できませんでした。",
+                `催事データを取得できませんでした。${error.message}`,
                 true
             );
-
         }
-
     }
 
 
@@ -633,50 +593,72 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =====================================
-       複製
-    ===================================== */
+    async function duplicateEvent(id) {
 
-    function duplicateEvent(id) {
+    const original =
+        events.find(
+            item => item.id === id
+        );
 
-        const original =
-            events.find(
-                item => item.id === id
-            );
+    if (!original) {
+        showMessage(
+            "複製対象が見つかりません。",
+            true
+        );
+        return;
+    }
 
+    try {
 
-        if (!original) {
+        await apiRequest(
+            API_BASE,
+            {
+                method: "POST",
 
-            return;
+                body: JSON.stringify({
+                    title:
+                        `${original.title}（複製）`,
 
-        }
+                    event_date:
+                        original.date,
 
+                    start_time:
+                        original.startTime,
 
-        const copy = {
+                    end_time:
+                        original.endTime,
 
-            ...original,
+                    zoom_url:
+                        original.zoomUrl,
 
-            id: createId(),
+                    image_url:
+                        original.image,
 
-            title:
-                `${original.title}（複製）`
+                    description:
+                        original.description
+                })
+            }
+        );
 
-        };
-
-
-        events.push(copy);
-
-        saveEvents();
-
-        renderEventList();
-
+        await loadEvents();
 
         showMessage(
             "催事を複製しました。"
         );
 
-    }
+    } catch (error) {
 
+        console.error(
+            "催事複製エラー:",
+            error
+        );
+
+        showMessage(
+            `催事を複製できませんでした。${error.message}`,
+            true
+        );
+    }
+}
 
     /* =====================================
        削除確認
@@ -741,46 +723,56 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================== */
 
     confirmDeleteButton.addEventListener(
-        "click",
-        () => {
+    "click",
+    async () => {
 
-            if (!deletingEventId) {
+        if (!deletingEventId) {
+            return;
+        }
 
-                return;
+        const id = deletingEventId;
 
-            }
+        try {
 
+            confirmDeleteButton.disabled = true;
 
-            events =
-                events.filter(
-                    event =>
-                        event.id !== deletingEventId
-                );
-
-
-            saveEvents();
-
-            renderEventList();
+            await apiRequest(
+                `${API_BASE}/${encodeURIComponent(id)}`,
+                {
+                    method: "DELETE"
+                }
+            );
 
             closeDeleteModal();
 
+            if (editingEventId === id) {
+                startNewEvent();
+            }
+
+            await loadEvents();
 
             showMessage(
                 "催事を削除しました。"
             );
 
+        } catch (error) {
 
-            if (
-                editingEventId === deletingEventId
-            ) {
+            console.error(
+                "催事削除エラー:",
+                error
+            );
 
-                startNewEvent();
+            showMessage(
+                `催事を削除できませんでした。${error.message}`,
+                true
+            );
 
-            }
+        } finally {
 
+            confirmDeleteButton.disabled = false;
         }
-    );
-
+    }
+);
 
     /* =====================================
        モーダル外クリック
@@ -944,238 +936,200 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================== */
 
     eventForm.addEventListener(
-        "submit",
-        (event) => {
+    "submit",
+    async (event) => {
 
-            event.preventDefault();
+        event.preventDefault();
 
+        const title =
+            eventTitle.value.trim();
 
-            const title =
-                eventTitle.value.trim();
+        const date =
+            eventDate.value;
 
+        const start =
+            startTime.value;
 
-            const date =
-                eventDate.value;
+        const end =
+            endTime.value;
 
+        const url =
+            zoomUrl.value.trim();
 
-            const start =
-                startTime.value;
-
-
-            const end =
-                endTime.value;
-
-
-            const url =
-                zoomUrl.value.trim();
+        const description =
+            eventDescription.value.trim();
 
 
-            const description =
-                eventDescription.value.trim();
+        if (!title) {
+
+            showMessage(
+                "催事名を入力してください。",
+                true
+            );
+
+            eventTitle.focus();
+
+            return;
+        }
 
 
-            /* 必須項目 */
+        if (!date) {
 
-            if (!title) {
+            showMessage(
+                "開催日を選択してください。",
+                true
+            );
 
-                showMessage(
-                    "催事名を入力してください。",
-                    true
-                );
+            eventDate.focus();
 
-                eventTitle.focus();
-
-                return;
-
-            }
+            return;
+        }
 
 
-            if (!date) {
+        if (!start) {
 
-                showMessage(
-                    "開催日を選択してください。",
-                    true
-                );
+            showMessage(
+                "開始時間を入力してください。",
+                true
+            );
 
-                eventDate.focus();
+            startTime.focus();
 
-                return;
-
-            }
-
-
-            if (!start) {
-
-                showMessage(
-                    "開始時間を入力してください。",
-                    true
-                );
-
-                startTime.focus();
-
-                return;
-
-            }
+            return;
+        }
 
 
-            /* 時間チェック */
+        if (
+            end &&
+            end <= start
+        ) {
 
-            if (
-                end &&
-                end <= start
-            ) {
+            showMessage(
+                "終了時間は開始時間より後にしてください。",
+                true
+            );
 
-                showMessage(
-                    "終了時間は開始時間より後にしてください。",
-                    true
-                );
+            endTime.focus();
 
-                endTime.focus();
-
-                return;
-
-            }
+            return;
+        }
 
 
-            /* URLチェック */
+        if (url) {
 
-            if (url) {
+            try {
 
-                try {
+                const parsedUrl =
+                    new URL(url);
 
-                    const parsedUrl =
-                        new URL(url);
-
-
-                    if (
-                        parsedUrl.protocol !==
-                        "https:"
-                    ) {
-
-                        throw new Error();
-
-                    }
-
-                } catch {
-
-                    showMessage(
-                        "Zoom URLはhttps://から始まる正しいURLを入力してください。",
-                        true
-                    );
-
-                    zoomUrl.focus();
-
-                    return;
-
+                if (
+                    parsedUrl.protocol !==
+                    "https:"
+                ) {
+                    throw new Error();
                 }
 
+            } catch {
+
+                showMessage(
+                    "Zoom URLはhttps://から始まる正しいURLを入力してください。",
+                    true
+                );
+
+                zoomUrl.focus();
+
+                return;
             }
+        }
 
 
-            /* 新規作成 */
+        const submitButton =
+            eventForm.querySelector(
+                'button[type="submit"]'
+            );
+
+
+        const payload = {
+
+            title: title,
+
+            event_date: date,
+
+            start_time: start,
+
+            end_time: end,
+
+            zoom_url: url,
+
+            image_url:
+                selectedImageData || "",
+
+            description: description
+        };
+
+
+        try {
+
+            submitButton.disabled = true;
+
 
             if (!editingEventId) {
 
-                const newEvent = {
+                await apiRequest(
+                    API_BASE,
+                    {
+                        method: "POST",
 
-                    id: createId(),
-
-                    title,
-
-                    date,
-
-                    startTime: start,
-
-                    endTime: end,
-
-                    zoomUrl: url,
-
-                    image:
-                        selectedImageData,
-
-                    description
-
-                };
-
-
-                events.push(
-                    newEvent
+                        body:
+                            JSON.stringify(payload)
+                    }
                 );
-
-
-                saveEvents();
-
-                renderEventList();
 
                 showMessage(
                     "催事を登録しました。"
                 );
 
-            }
+            } else {
 
+                await apiRequest(
+                    `${API_BASE}/${encodeURIComponent(editingEventId)}`,
+                    {
+                        method: "PUT",
 
-            /* 編集 */
-
-            else {
-
-                const index =
-                    events.findIndex(
-                        item =>
-                            item.id ===
-                            editingEventId
-                    );
-
-
-                if (index === -1) {
-
-                    showMessage(
-                        "編集対象が見つかりません。",
-                        true
-                    );
-
-                    return;
-
-                }
-
-
-                events[index] = {
-
-                    ...events[index],
-
-                    title,
-
-                    date,
-
-                    startTime: start,
-
-                    endTime: end,
-
-                    zoomUrl: url,
-
-                    image:
-                        selectedImageData,
-
-                    description
-
-                };
-
-
-                saveEvents();
-
-                renderEventList();
+                        body:
+                            JSON.stringify(payload)
+                    }
+                );
 
                 showMessage(
                     "催事を更新しました。"
                 );
-
             }
 
 
+            await loadEvents();
+
             startNewEvent();
 
-        }
-    );
 
+        } catch (error) {
+
+            console.error(
+                "催事保存エラー:",
+                error
+            );
+
+            showMessage(
+                `催事を保存できませんでした。${error.message}`,
+                true
+            );
+
+        } finally {
+
+            submitButton.disabled = false;
+        }
+    }
+);
 
     /* =====================================
        キャンセル
@@ -1234,9 +1188,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ===================================== */
 
     loadEvents();
-
-    renderEventList();
-
-    resetImagePreview();
+resetImagePreview();
 
 });
