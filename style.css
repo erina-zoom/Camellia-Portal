@@ -943,29 +943,30 @@ body {
 }
 
 
-/* 催事画像 */
+/* 催事画像：一覧ではコンパクトに表示 */
 
 .event-image {
     display: block;
 
-    width: calc(100% + 36px);
-    max-width: none;
+    width: 100%;
+    max-width: 100%;
 
-    height: auto;
+    height: 180px;
 
-    margin: -18px -18px 16px;
+    margin: 0 0 16px;
 
     object-fit: cover;
+
+    border-radius: 12px;
 }
 
 
-/* 画像の高さをPCで調整 */
+/* PC */
 
 @media (min-width: 601px) {
 
     .event-image {
-        max-height: 360px;
-        object-fit: cover;
+        height: 200px;
     }
 
 }
@@ -976,13 +977,7 @@ body {
 @media (max-width: 600px) {
 
     .event-image {
-        width: calc(100% + 32px);
-
-        margin: -16px -16px 14px;
-
-        max-height: 240px;
-
-        object-fit: cover;
+        height: 160px;
     }
 
 }
