@@ -24,8 +24,8 @@ body {
         "Yu Gothic",
         sans-serif;
 
-    background: #f7f8fa;
-    color: #333;
+    background: #faf7f5;
+color: #3d3432;
 
     line-height: 1.6;
 }
@@ -316,7 +316,7 @@ body {
 
 
 .view-tab.active {
-    background: #247447;
+    background: #c94f70;
     color: #ffffff;
 }
 
@@ -360,7 +360,7 @@ body {
 
 
 .event-date {
-    color: #247447;
+    color: #c94f70;
 
     font-size: 16px;
     font-weight: 700;
@@ -529,7 +529,7 @@ body {
 
     border-radius: 5px;
 
-    background: #247447;
+    background: #c94f70;
     color: #ffffff;
 
     font-size: 11px;
@@ -1060,7 +1060,7 @@ body {
 /* 今日の予定を少し強調 */
 
 .today-highlight {
-    border-left: 5px solid #247447;
+    border-left: 5px solid #c94f70;
 }
 
 
