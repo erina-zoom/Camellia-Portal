@@ -611,44 +611,36 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (event.image) {
 
-            const image =
-                document.createElement(
-                    "img"
-                );
+    const image =
+        document.createElement("img");
 
+    image.className =
+        "event-thumbnail";
 
-            image.className =
-                "event-image";
+    image.src =
+        event.image;
 
+    image.alt =
+        event.title ||
+        "催事画像";
 
-            image.src =
-                event.image;
+    image.loading =
+        "lazy";
 
+    image.addEventListener(
+        "error",
+        () => {
 
-            image.alt =
-                event.title ||
-                "催事画像";
-
-
-            image.loading =
-                "lazy";
-
-
-            image.addEventListener(
-                "error",
-                () => {
-
-                    image.remove();
-
-                }
-            );
-
-
-            card.appendChild(
-                image
-            );
+            image.remove();
 
         }
+    );
+
+    card.appendChild(
+        image
+    );
+
+}
 
 
         /* =====================================
