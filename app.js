@@ -588,8 +588,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     ===================================== */
 
     function createEventCard(
-        event
-    ) {
+    event,
+    showImage = true
+) {
 
         const card =
             document.createElement(
@@ -609,7 +610,7 @@ document.addEventListener("DOMContentLoaded", async () => {
            画像
         ===================================== */
 
-        if (event.image) {
+        if (event.image && showImage) {
 
     const image =
         document.createElement("img");
@@ -1016,16 +1017,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
         sortedEvents.forEach(
-            event => {
+    event => {
 
-                allEvents.appendChild(
-                    createEventCard(
-                        event
-                    )
-                );
-
-            }
+        allEvents.appendChild(
+            createEventCard(
+                event,
+                false
+            )
         );
+
+    }
+);
 
     }
 
