@@ -47,7 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const imagePreview =
         document.getElementById("imagePreview");
-
+const removeImageButton =
+    document.getElementById("removeImageButton");
     const eventDescription =
         document.getElementById("eventDescription");
 
@@ -890,46 +891,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showImagePreview(src) {
 
-        imagePreview.innerHTML =
-            "";
+    imagePreview.innerHTML = "";
 
+    const image =
+        document.createElement("img");
 
-        const image =
-            document.createElement("img");
+    image.src = src;
 
-        image.src =
-            src;
+    image.alt = "催事画像プレビュー";
 
-        image.alt =
-            "催事画像プレビュー";
+    imagePreview.appendChild(image);
 
-
-        imagePreview.appendChild(
-            image
-        );
-
+    if (removeImageButton) {
+        removeImageButton.style.display = "inline-flex";
     }
+}
 
 
-    function resetImagePreview() {
+function resetImagePreview() {
 
-        imagePreview.innerHTML =
-            "";
+    imagePreview.innerHTML = "";
 
+    const text =
+        document.createElement("span");
 
-        const text =
-            document.createElement("span");
+    text.textContent =
+        "画像を選択するとここに表示されます";
 
-        text.textContent =
-            "画像を選択するとここに表示されます";
+    imagePreview.appendChild(text);
 
-
-        imagePreview.appendChild(
-            text
-        );
-
+    if (removeImageButton) {
+        removeImageButton.style.display = "none";
     }
+}
+if (removeImageButton) {
 
+    removeImageButton.addEventListener(
+        "click",
+        () => {
+
+            selectedImageData = "";
+
+            eventImage.value = "";
+
+            resetImagePreview();
+
+            showMessage(
+                "画像を削除しました。保存すると反映されます。"
+            );
+
+        }
+    );
+
+}
 
     /* =====================================
        フォーム送信
