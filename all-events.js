@@ -1,5 +1,6 @@
 console.log("all-events.js 読み込み成功");
 
+
 const API_BASE =
     "https://camellia-portal.tomoya19980427goku.workers.dev/api/events";
 
@@ -113,11 +114,19 @@ function createEventCard(event) {
     card.appendChild(time);
 
     if (event.description) {
-        card.appendChild(description);
+
+        card.appendChild(
+            description
+        );
+
     }
 
     if (event.zoom_url) {
-        card.appendChild(zoomButton);
+
+        card.appendChild(
+            zoomButton
+        );
+
     }
 
 
@@ -142,29 +151,41 @@ async function loadEvents() {
 
 
         if (!response.ok) {
+
             throw new Error(
                 "予定の取得に失敗しました"
             );
+
         }
 
 
         const data =
-    await response.json();
+            await response.json();
 
-const events =
-    data.events || [];
-console.log("取得した予定:", events);
+
+        const events =
+            data.events || [];
+
+
+        console.log(
+            "取得した予定:",
+            events
+        );
+
 
         allEvents.innerHTML = "";
 
 
-        if (!Array.isArray(events) ||
-            events.length === 0) {
+        if (
+            !Array.isArray(events) ||
+            events.length === 0
+        ) {
 
             allEvents.innerHTML =
                 "<p>今後の予定はありません。</p>";
 
             return;
+
         }
 
 
@@ -179,25 +200,17 @@ console.log("取得した予定:", events);
                     const dateB =
                         `${b.event_date} ${b.start_time || ""}`;
 
-                    return dateA.localeCompare(dateB);
+                    return dateA.localeCompare(
+                        dateB
+                    );
+
                 }
             );
 
 
-        // 今日以降の予定だけ表示
-        const today =
-            new Date();
-
-        today.setHours(
-            0,
-            0,
-            0,
-            0
-        );
-
-
+        // このページでは全予定を表示
         const futureEvents =
-    sortedEvents;
+            sortedEvents;
 
 
         if (futureEvents.length === 0) {
@@ -206,6 +219,7 @@ console.log("取得した予定:", events);
                 "<p>今後の予定はありません。</p>";
 
             return;
+
         }
 
 
@@ -219,13 +233,16 @@ console.log("取得した予定:", events);
             }
         );
 
+
     } catch (error) {
 
         console.error(error);
 
         allEvents.innerHTML =
             "<p>予定を読み込めませんでした。</p>";
+
     }
+
 }
 
 
@@ -236,23 +253,34 @@ console.log("取得した予定:", events);
 const menuButton =
     document.getElementById("menuButton");
 
+
 const closeMenuButton =
     document.getElementById(
         "closeMenuButton"
     );
 
+
 const sideMenu =
     document.getElementById("sideMenu");
+
 
 const menuOverlay =
     document.getElementById("menuOverlay");
 
 
+// ==============================
+// メニューを開く
+// ==============================
+
 function openMenu() {
 
-    sideMenu.classList.add("open");
+    sideMenu.classList.add(
+        "show"
+    );
 
-    menuOverlay.classList.add("show");
+    menuOverlay.classList.add(
+        "show"
+    );
 
     menuButton.setAttribute(
         "aria-expanded",
@@ -263,14 +291,23 @@ function openMenu() {
         "aria-hidden",
         "false"
     );
+
 }
 
+
+// ==============================
+// メニューを閉じる
+// ==============================
 
 function closeMenu() {
 
-    sideMenu.classList.remove("open");
+    sideMenu.classList.remove(
+        "show"
+    );
 
-    menuOverlay.classList.remove("show");
+    menuOverlay.classList.remove(
+        "show"
+    );
 
     menuButton.setAttribute(
         "aria-expanded",
@@ -281,8 +318,13 @@ function closeMenu() {
         "aria-hidden",
         "true"
     );
+
 }
 
+
+// ==============================
+// メニューボタン
+// ==============================
 
 if (menuButton) {
 
@@ -290,8 +332,13 @@ if (menuButton) {
         "click",
         openMenu
     );
+
 }
 
+
+// ==============================
+// 閉じるボタン
+// ==============================
 
 if (closeMenuButton) {
 
@@ -299,8 +346,13 @@ if (closeMenuButton) {
         "click",
         closeMenu
     );
+
 }
 
+
+// ==============================
+// 背景クリックで閉じる
+// ==============================
 
 if (menuOverlay) {
 
@@ -308,6 +360,7 @@ if (menuOverlay) {
         "click",
         closeMenu
     );
+
 }
 
 
