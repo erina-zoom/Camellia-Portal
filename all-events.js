@@ -148,8 +148,11 @@ async function loadEvents() {
         }
 
 
-        const events =
-            await response.json();
+        const data =
+    await response.json();
+
+const events =
+    data.events || [];
 console.log("取得した予定:", events);
 
         allEvents.innerHTML = "";
