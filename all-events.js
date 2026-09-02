@@ -148,7 +148,7 @@ async function loadEvents() {
 
         const events =
             await response.json();
-
+console.log("取得した予定:", events);
 
         allEvents.innerHTML = "";
 
