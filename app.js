@@ -1019,26 +1019,45 @@ card.appendChild(
         }
 
 
-        sortedEvents
-    .slice(0, 3)
-    .forEach(
-        event => {
+        const eventsToShow =
+    window.innerWidth >= 901
+        ? sortedEvents.slice(0, 3)
+        : sortedEvents;
 
-            allEvents.appendChild(
-                createEventCard(
-                    event,
-                    false
-                )
-            );
+eventsToShow.forEach(
+    event => {
 
-        }
-    );
-showAllEventsButton.addEventListener(
-    "click",
-    () => {
-        window.location.href = "all-events.html";
+        allEvents.appendChild(
+            createEventCard(
+                event,
+                false
+            )
+        );
+
     }
 );
+
+
+if (window.innerWidth >= 901) {
+
+    showAllEventsButton.style.display =
+        sortedEvents.length > 3
+            ? "block"
+            : "none";
+
+    showAllEventsButton.addEventListener(
+        "click",
+        () => {
+            window.location.href =
+                "all-events.html";
+        }
+    );
+
+} else {
+
+    showAllEventsButton.style.display =
+        "none";
+}
     }
 
 
