@@ -66,7 +66,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const views =
         document.querySelectorAll(".view");
 
-
+const showAllEventsButton =
+    document.getElementById("showAllEventsButton");
     /* =====================================
        Cloudflare API
     ===================================== */
@@ -466,7 +467,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
         scheduleContent.style.display =
-            "block";
+    window.innerWidth >= 901
+        ? "grid"
+        : "block";
 
         calendarContent.style.display =
             "none";
@@ -717,7 +720,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             "催事";
 
 
-        /* =====================================
+        
+card.appendChild(
+            title
+        );
+
+        card.appendChild(
+            date
+        );
+
+
+        card.appendChild(
+            time
+        );
+
+
+        
+/* =====================================
            説明
         ===================================== */
 
@@ -744,22 +763,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             );
 
         }
-
-
-        card.appendChild(
-            date
-        );
-
-
-        card.appendChild(
-            time
-        );
-
-
-        card.appendChild(
-            title
-        );
-
 
         /* =====================================
            Zoom参加ボタン
@@ -1016,19 +1019,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
 
-        sortedEvents.forEach(
-    event => {
+        sortedEvents
+    .slice(0, 3)
+    .forEach(
+        event => {
 
-        allEvents.appendChild(
-            createEventCard(
-                event,
-                false
-            )
-        );
+            allEvents.appendChild(
+                createEventCard(
+                    event,
+                    false
+                )
+            );
 
+        }
+    );
+showAllEventsButton.addEventListener(
+    "click",
+    () => {
+        window.location.href = "all-events.html";
     }
 );
-
     }
 
 

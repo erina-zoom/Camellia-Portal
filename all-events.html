@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#8b1e3f"
+    >
+
+    <title>今後の予定 | Camellia Portal</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+</head>
+
+
+<body>
+
+<header class="app-header">
+
+    <button
+        id="menuButton"
+        class="menu-button"
+        aria-label="メニューを開く"
+        aria-expanded="false"
+    >
+        ☰
+    </button>
+
+    <div class="header-title">
+        <h1>Camellia Portal</h1>
+    </div>
+
+</header>
+
+
+<div
+    id="menuOverlay"
+    class="menu-overlay"
+></div>
+
+
+<aside
+    id="sideMenu"
+    class="side-menu"
+    aria-hidden="true"
+>
+
+    <div class="side-menu-header">
+
+        <div class="side-menu-title">
+            Camellia Portal
+        </div>
+
+        <button
+            id="closeMenuButton"
+            class="close-menu-button"
+            aria-label="メニューを閉じる"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <nav class="menu-list">
+
+        <button
+            class="menu-item"
+            onclick="location.href='index.html'"
+        >
+            🏠 ホーム
+        </button>
+
+        <button
+            class="menu-item"
+            onclick="location.href='index.html'"
+        >
+            📋 予定表
+        </button>
+
+        <button
+            class="menu-item"
+            onclick="location.href='index.html'"
+        >
+            📅 カレンダー
+        </button>
+
+    </nav>
+
+</aside>
+
+
+<main class="app-main">
+
+    <div class="page-title">
+
+        <h2>
+            今後の予定
+        </h2>
+
+        <p>
+            今後予定されているZoomをご確認いただけます。
+        </p>
+
+    </div>
+
+
+    <section class="schedule-section">
+
+        <div id="allEvents">
+            読み込み中...
+        </div>
+
+    </section>
+
+</main>
+
+
+<script src="all-events.js"></script>
+
+</body>
+
+</html>

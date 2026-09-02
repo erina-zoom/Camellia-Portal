@@ -334,6 +334,9 @@ color: #3d3432;
     margin: 0 0 12px;
 
     font-size: 19px;
+    color: #c94f70;
+    padding-bottom: 6px;
+border-bottom: 2px solid #f1c4cf;
 }
 
 
@@ -341,16 +344,17 @@ color: #3d3432;
     width: 100%;
 
     background: #ffffff;
+border: 1px solid #f1c4cf;
+    border-radius: 18px;
 
-    border-radius: 16px;
+    padding: 16px;
 
-    padding: 18px;
-
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
 
     cursor: pointer;
+    
 }
 
 
@@ -370,9 +374,9 @@ color: #3d3432;
 .event-time {
     margin-top: 3px;
 
-    color: #555;
+    color: #8a7777;
 
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 600;
 }
 
@@ -667,7 +671,7 @@ color: #3d3432;
 
     background: #ffffff;
 
-    border-radius: 20px;
+    border-radius: 24px;
 
     padding: 25px;
 }
@@ -685,7 +689,7 @@ color: #3d3432;
     border: none;
     border-radius: 50%;
 
-    background: #eeeeee;
+    background: #f8e7ec;
 
     font-size: 28px;
 
@@ -698,7 +702,25 @@ color: #3d3432;
 ========================================= */
 
 @media (min-width: 901px) {
+    .show-all-events-button {
+        display: block;
+        width: 100%;
 
+        margin-top: 4px;
+        padding: 10px 0;
+
+        border: none;
+        background: transparent;
+
+        color: #c94f70;
+
+        font-size: 15px;
+        font-weight: 700;
+
+        text-align: right;
+
+        cursor: pointer;
+    }
     .app-header {
         padding-left: 28px;
         padding-right: 28px;
@@ -729,7 +751,11 @@ color: #3d3432;
         margin-left: auto;
         margin-right: auto;
     }
-
+    #scheduleContent {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+    }
 
     .event-card {
         padding: 20px 22px;
@@ -959,7 +985,7 @@ background-size: auto 58px;
 
     object-fit: cover;
 
-    border-radius: 12px;
+    border-radius: 16px;
 }
 
 
@@ -1012,11 +1038,11 @@ background-size: auto 58px;
 /* 説明 */
 
 .event-description {
-    margin-top: 10px;
+    margin-top: 16px;
 
     color: #666;
 
-    font-size: 14px;
+    font-size: 15px;
 
     white-space: pre-wrap;
 }
