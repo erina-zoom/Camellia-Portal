@@ -1,3 +1,5 @@
+console.log("all-events.js 読み込み成功");
+
 const API_BASE =
     "https://camellia-portal.tomoya19980427goku.workers.dev/api/events";
 
