@@ -38,7 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const endTime =
         document.getElementById("endTime");
-
+const eventColor =
+    document.getElementById("eventColor");
     const zoomUrl =
         document.getElementById("zoomUrl");
 
