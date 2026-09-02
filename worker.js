@@ -58,6 +58,7 @@ export default {
                         end_time,
                         zoom_url,
                         image_url,
+                        event_color,
                         description,
                         created_at,
                         updated_at
@@ -119,9 +120,10 @@ export default {
                         end_time,
                         zoom_url,
                         image_url,
+                        event_color,
                         description
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 `)
                     .bind(
                         id,
@@ -131,6 +133,7 @@ export default {
                         data.end_time || "",
                         data.zoom_url || "",
                         data.image_url || "",
+                        data.event_color || "#d95b82",
                         data.description || ""
                     )
                     .run();
@@ -184,6 +187,7 @@ export default {
                         end_time,
                         zoom_url,
                         image_url,
+                        event_color,
                         description,
                         created_at,
                         updated_at
@@ -257,6 +261,7 @@ export default {
                         end_time = ?,
                         zoom_url = ?,
                         image_url = ?,
+                        event_color = ?,
                         description = ?,
                         updated_at = CURRENT_TIMESTAMP
                     WHERE id = ?
@@ -268,6 +273,7 @@ export default {
                         data.end_time || "",
                         data.zoom_url || "",
                         data.image_url || "",
+                        data.event_color || "#d95b82",
                         data.description || "",
                         id
                     )
