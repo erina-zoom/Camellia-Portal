@@ -776,6 +776,8 @@ color: #3d3432;
     .app-header {
         min-height: 58px;
         background-image: url("header-bg-mobile.png");
+        background-position: right center;
+background-size: auto 58px;
         padding: 6px 10px;
     }
 
