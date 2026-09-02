@@ -1024,6 +1024,7 @@ card.appendChild(
         ? sortedEvents.slice(0, 3)
         : sortedEvents;
 
+
 eventsToShow.forEach(
     event => {
 
@@ -1045,18 +1046,18 @@ if (window.innerWidth >= 901) {
             ? "block"
             : "none";
 
-    showAllEventsButton.addEventListener(
-        "click",
-        () => {
-            window.location.href =
-                "all-events.html";
-        }
-    );
+    showAllEventsButton.onclick = () => {
+
+        window.location.href =
+            "all-events.html";
+
+    };
 
 } else {
 
     showAllEventsButton.style.display =
         "none";
+
 }
     }
 
