@@ -1078,7 +1078,8 @@ if (removeImageButton) {
 
             image_url:
                 selectedImageData || "",
-
+            event_color:
+    eventColor.value,
             description: description
         };
 
