@@ -137,7 +137,9 @@ const showAllEventsButton =
 
                         image:
                             event.image_url || "",
-
+                        eventColor:
+    event.event_color || "#d95b82",
+    
                         description:
                             event.description || ""
 
