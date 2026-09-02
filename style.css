@@ -44,9 +44,9 @@ color: #3d3432;
     align-items: center;
 
     width: 100%;
-    min-height: 64px;
+    min-height: 120px;
 
-    background: #ffffff;
+    background: #fff8fa url("header-bg-pc.png") center / cover no-repeat;
     border-bottom: 1px solid #e8e8e8;
 
     padding: 8px 16px;
@@ -711,7 +711,7 @@ color: #3d3432;
 
 
     .app-main {
-        padding-top: 30px;
+        padding-top: 10px;
     }
 
 
@@ -775,7 +775,7 @@ color: #3d3432;
 
     .app-header {
         min-height: 58px;
-
+        background-image: url("header-bg-mobile.png");
         padding: 6px 10px;
     }
 
