@@ -139,7 +139,7 @@ const showAllEventsButton =
                             event.image_url || "",
                         eventColor:
     event.event_color || "#d95b82",
-    
+
                         description:
                             event.description || ""
 
@@ -1200,8 +1200,10 @@ if (window.innerWidth >= 901) {
 
                     eventElement.className =
                         "calendar-event";
-
-
+                    
+eventElement.style.backgroundColor =
+    event.eventColor || "#d95b82";
+                        
                     eventElement.textContent =
                         event.title;
 
