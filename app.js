@@ -1149,13 +1149,29 @@ if (window.innerWidth >= 901) {
         ) {
 
             const cell =
-                document.createElement(
-                    "div"
-                );
+    document.createElement(
+        "div"
+    );
 
+const dayOfWeek =
+    new Date(
+        year,
+        month,
+        day
+    ).getDay();
 
-            cell.className =
-                "calendar-day";
+if (dayOfWeek === 6) {
+    cell.className =
+        "calendar-day calendar-saturday";
+}
+else if (dayOfWeek === 0) {
+    cell.className =
+        "calendar-day calendar-sunday";
+}
+else {
+    cell.className =
+        "calendar-day";
+}
 
 
             const dayNumber =
