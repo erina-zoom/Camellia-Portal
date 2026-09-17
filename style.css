@@ -522,7 +522,23 @@ border: 1px solid #f1c4cf;
     font-size: 14px;
     font-weight: 700;
 }
+/* 土曜日 */
+.calendar-saturday {
+    background: #f0f6ff;
+}
 
+.calendar-saturday .calendar-day-number {
+    color: #4f86c6;
+}
+
+/* 日曜日 */
+.calendar-sunday {
+    background: #fff1f1;
+}
+
+.calendar-sunday .calendar-day-number {
+    color: #d95b5b;
+}
 
 .calendar-event {
     width: 100%;
