@@ -449,7 +449,24 @@ const showAllEventsButton =
             return;
 
         }
+if (
+    viewName === "zoom"
+) {
 
+    document
+        .getElementById("zoomView")
+        .classList.add(
+            "active-view"
+    );
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+    return;
+
+}
     }
 
 
